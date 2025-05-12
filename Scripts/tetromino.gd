@@ -68,18 +68,18 @@ func hard_drop_ghost():
 	return final_hard_drop_position
 
 
-func _input(_event):
-	if Input.is_action_just_pressed("left"):
+func _input(_event):		
+	if Input.is_action_pressed("left"):
 		move(Vector2.LEFT)
-	elif Input.is_action_just_pressed("right"):
+	elif Input.is_action_pressed("right"):
 		move(Vector2.RIGHT)
-	elif Input.is_action_just_pressed("down"):
+	elif Input.is_action_pressed("down"):
 		move(Vector2.DOWN)
-	elif Input.is_action_just_pressed("hard_drop"):
+	elif Input.is_action_pressed("hard_drop"):
 		hard_drop()
-	elif Input.is_action_just_pressed("rotate_left"):
+	elif Input.is_action_pressed("rotate_left"):
 		rotate_tetromino(-1)
-	elif Input.is_action_just_pressed("rotate_right"):
+	elif Input.is_action_pressed("rotate_right"):
 		rotate_tetromino(1)
 
 func move(direction: Vector2) -> bool:
