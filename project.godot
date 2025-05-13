@@ -10,10 +10,10 @@ config_version=5
 
 [application]
 
-config/name="TetrisTutorial"
-run/main_scene="res://Scenes/main.tscn"
+config/name="Proiect IP"
+run/main_scene="uid://dwxeqve2oc5g4"
 config/features=PackedStringArray("4.4", "Forward Plus")
-config/icon="res://Assets/icon.svg"
+config/icon="res://icon.png"
 
 [autoload]
 
@@ -23,6 +23,12 @@ Shared="*res://Scripts/shared.gd"
 
 window/size/viewport_width=324
 window/stretch/mode="canvas_items"
+window/size/width=1366
+window/size/height=768
+
+[gdnative]
+
+singletons=[]
 
 [input]
 

@@ -1,11 +1,11 @@
 [gd_scene load_steps=7 format=3 uid="uid://cjshm244ivhhy"]
 
-[ext_resource type="Texture2D" uid="uid://dj1olp7v7y623" path="res://Assets/Border.png" id="1_2kdh7"]
-[ext_resource type="Texture2D" uid="uid://dddenph2txf1h" path="res://Assets/Grid.png" id="2_7mxh0"]
-[ext_resource type="Script" uid="uid://btfta0160f7eg" path="res://Scripts/piece_spawner.gd" id="3_ygpth"]
-[ext_resource type="Script" uid="uid://5rbs4acn6alb" path="res://Scripts/board.gd" id="4_yatxc"]
-[ext_resource type="PackedScene" uid="uid://c4j05v6wfo823" path="res://Scenes/tetromino.tscn" id="5_j0sar"]
-[ext_resource type="PackedScene" uid="uid://ct2meksk8huhw" path="res://Scenes/ui.tscn" id="6_5ie2u"]
+[ext_resource type="Texture2D" uid="uid://dj1olp7v7y623" path="res://Assets/Border.png" id="1_i6g32"]
+[ext_resource type="Texture2D" uid="uid://dddenph2txf1h" path="res://Assets/Grid.png" id="2_1l0tm"]
+[ext_resource type="Script" uid="uid://4iqh8wk41j8m" path="res://Scripts/board.gd" id="3_v158k"]
+[ext_resource type="PackedScene" uid="uid://c4j05v6wfo823" path="res://Scenes/tetromino.tscn" id="4_h4fw4"]
+[ext_resource type="Script" uid="uid://cevoeupqxk5he" path="res://Scripts/piece_spawner.gd" id="5_ldgsr"]
+[ext_resource type="PackedScene" uid="uid://ct2meksk8huhw" path="res://Scenes/ui.tscn" id="6_o5yvi"]
 
 [node name="main" type="Node"]
 
@@ -18,7 +18,7 @@ offset_top = -496.0
 offset_right = 1794.0
 offset_bottom = 3474.0
 scale = Vector2(0.25, 0.25)
-texture = ExtResource("1_2kdh7")
+texture = ExtResource("1_i6g32")
 
 [node name="GridTexture" type="TextureRect" parent="Border"]
 layout_mode = 1
@@ -33,12 +33,12 @@ offset_right = 959.0
 offset_bottom = 1928.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_7mxh0")
+texture = ExtResource("2_1l0tm")
 stretch_mode = 1
 
 [node name="Board" type="Node" parent="."]
-script = ExtResource("4_yatxc")
-tetromino_scene = ExtResource("5_j0sar")
+script = ExtResource("3_v158k")
+tetromino_scene = ExtResource("4_h4fw4")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 custom_minimum_size = Vector2(200, 100)
@@ -54,6 +54,6 @@ text = "NEXT TETROMINO:"
 horizontal_alignment = 1
 
 [node name="PieceSpawner" type="Node" parent="."]
-script = ExtResource("3_ygpth")
+script = ExtResource("5_ldgsr")
 
-[node name="UI" parent="." instance=ExtResource("6_5ie2u")]
+[node name="UI" parent="." instance=ExtResource("6_o5yvi")]

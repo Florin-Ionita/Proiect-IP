@@ -75,7 +75,7 @@ func _input(_event):
 		move(Vector2.RIGHT)
 	elif Input.is_action_pressed("down"):
 		move(Vector2.DOWN)
-	elif Input.is_action_pressed("hard_drop"):
+	elif Input.is_action_just_pressed("hard_drop"):
 		hard_drop()
 	elif Input.is_action_pressed("rotate_left"):
 		rotate_tetromino(-1)
