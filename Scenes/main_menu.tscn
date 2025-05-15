@@ -1,13 +1,12 @@
-[gd_scene load_steps=3 format=3 uid="uid://dwxeqve2oc5g4"]
+[gd_scene load_steps=5 format=3 uid="uid://dwxeqve2oc5g4"]
 
 [ext_resource type="Script" uid="uid://27vuuiiamc30" path="res://Scripts/main_menu.gd" id="1_28flt"]
+[ext_resource type="Texture2D" uid="uid://buao1lsy50ov0" path="res://Assets/wp5071994-3870902222.jpg" id="2_1ehe0"]
+[ext_resource type="FontFile" uid="uid://c5k61pa3i3flj" path="res://Assets/Font/PlayfairDisplay-Regular.ttf" id="3_ce3w2"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7vrkn"]
-bg_color = Color(0.482977, 0.226819, 0.664676, 1)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ce3w2"]
+texture = ExtResource("2_1ehe0")
+modulate_color = Color(0.299547, 0.299547, 0.299547, 1)
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -18,21 +17,47 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_28flt")
 
-[node name="Start_button" type="Button" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -100.5
-offset_top = -23.0
-offset_right = 100.5
-offset_bottom = 23.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 20
-theme_override_styles/normal = SubResource("StyleBoxFlat_7vrkn")
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 324.0
+offset_bottom = 648.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_ce3w2")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 0
+offset_right = 322.0
+offset_bottom = 651.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 100
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_fonts/font = ExtResource("3_ce3w2")
+theme_override_font_sizes/font_size = 40
+text = "
+
+Mercury's Grid
+"
+horizontal_alignment = 1
+vertical_alignment = 3
+
+[node name="Start_button" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 200
+theme_override_font_sizes/font_size = 30
 text = "START"
 
-[connection signal="pressed" from="Start_button" to="." method="_on_start_pressed"]
+[node name="Exit_button" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 20
+text = "EXIT
+"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Start_button" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Exit_button" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Exit_button" to="." method="_on_exit_pressed"]
