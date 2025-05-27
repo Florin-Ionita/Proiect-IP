@@ -5,8 +5,8 @@ class_name Tetromino
 signal lock_tetromino(tetromino: Tetromino)
 
 var bounds = {
-	"min_x": -216,
-	"max_x": 216,
+	"min_x": -500,
+	"max_x": 0,
 	"max_y": 457
 }
 

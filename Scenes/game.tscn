@@ -1,5 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://cjshm244ivhhy"]
+[gd_scene load_steps=9 format=3 uid="uid://cjshm244ivhhy"]
 
+[ext_resource type="Texture2D" uid="uid://buao1lsy50ov0" path="res://Assets/wp5071994-3870902222.jpg" id="1_1l0tm"]
 [ext_resource type="Texture2D" uid="uid://dj1olp7v7y623" path="res://Assets/Border.png" id="1_i6g32"]
 [ext_resource type="Texture2D" uid="uid://dddenph2txf1h" path="res://Assets/Grid.png" id="2_1l0tm"]
 [ext_resource type="Script" uid="uid://4iqh8wk41j8m" path="res://Scripts/board.gd" id="3_v158k"]
@@ -7,15 +8,28 @@
 [ext_resource type="Script" uid="uid://cevoeupqxk5he" path="res://Scripts/piece_spawner.gd" id="5_ldgsr"]
 [ext_resource type="PackedScene" uid="uid://ct2meksk8huhw" path="res://Scenes/ui.tscn" id="6_o5yvi"]
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_v158k"]
+texture = ExtResource("1_1l0tm")
+modulate_color = Color(0.298039, 0.298039, 0.298039, 1)
+
 [node name="main" type="Node"]
 
+[node name="Panel" type="Panel" parent="."]
+offset_left = -580.0
+offset_top = -648.0
+offset_right = 1580.0
+offset_bottom = 3672.0
+scale = Vector2(0.3, 0.3)
+theme_override_styles/panel = SubResource("StyleBoxTexture_v158k")
+
 [node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(-256, 0)
 zoom = Vector2(0.5, 0.5)
 
 [node name="Border" type="TextureRect" parent="."]
-offset_left = -256.0
+offset_left = -512.0
 offset_top = -496.0
-offset_right = 1794.0
+offset_right = 1538.0
 offset_bottom = 3474.0
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("1_i6g32")
@@ -42,9 +56,12 @@ tetromino_scene = ExtResource("4_h4fw4")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 custom_minimum_size = Vector2(200, 100)
-offset_left = -100.0
+anchors_preset = -1
+anchor_left = -0.79
+anchor_right = -0.79
+offset_left = -100.04
 offset_top = -631.0
-offset_right = 100.0
+offset_right = 99.96
 offset_bottom = -531.0
 
 [node name="Label" type="Label" parent="PanelContainer"]
