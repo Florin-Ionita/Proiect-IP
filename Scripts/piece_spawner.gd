@@ -1,27 +1,42 @@
 extends Node
 
-var current_tetromino
-var next_tetromino 
-
 @onready var board = $"../Board" as Board
 @onready var ui = $"../UI" as UI
+
+
+var current_data
+var next_data 
+
 var is_game_over = false
 
 func _ready():
-	current_tetromino = Shared.Tetromino.values().pick_random()	
-	next_tetromino = Shared.Tetromino.values().pick_random()	
-	board.spawn_tetromino(current_tetromino, false, null)
-	board.spawn_tetromino(next_tetromino, true, Vector2(100, 50))
+	# Create data for the next 2 pieces
+	current_data = create_tetromino_data()
+	next_data = create_tetromino_data()
+	
+	# Add them to the board
+	board.spawn_tetromino(current_data, true)
+	board.spawn_tetromino(next_data, false, Vector2(90, 50))
+	
+	# Add the signals
 	board.tetromino_locked.connect(on_tetromino_locked)
 	board.game_over.connect(on_game_over)
 	
+
+func create_tetromino_data() -> TetrominoShared.TetrominoData:
+	var data = TetrominoShared.TetrominoData.new()
+	data.shape = TetrominoShared.Tetromino.values().pick_random()
+	data.color = BlockShared.BlockType.values().pick_random()
+	data.effect = BlockShared.BlockEffect.Default
+	return data
+
 func on_tetromino_locked():
 	if is_game_over:
 		return
-	current_tetromino = next_tetromino
-	next_tetromino = Shared.Tetromino.values().pick_random()
-	board.spawn_tetromino(current_tetromino, false, null)
-	board.spawn_tetromino(next_tetromino, true, Vector2(100, 50))
+	current_data = next_data	
+	next_data = create_tetromino_data()
+	board.spawn_tetromino(current_data, true)
+	board.spawn_tetromino(next_data, false, Vector2(90, 50))
 
 func on_game_over():
 	is_game_over = true

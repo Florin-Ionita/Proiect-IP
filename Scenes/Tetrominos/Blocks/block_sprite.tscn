@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://cylo44f7wllri"]
+
+[ext_resource type="Texture2D" uid="uid://btu60diraatfo" path="res://Assets/BlockAssets.png" id="1_o2me5"]
+
+[node name="BlockSprite" type="Sprite2D"]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_o2me5")
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 192)

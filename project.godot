@@ -18,6 +18,9 @@ config/icon="res://Assets/icon.svg"
 [autoload]
 
 Shared="*res://Scripts/shared.gd"
+BlockShared="*res://Scripts/Tetrominos/Blocks/block_props.gd"
+TetrominoShared="*res://Scripts/Tetrominos/tetromino_props.gd"
+BoardShared="*res://Scripts/Board/board_props.gd"
 
 [display]
 
