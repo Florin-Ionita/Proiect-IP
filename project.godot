@@ -21,7 +21,7 @@ Shared="*res://Scripts/shared.gd"
 
 [display]
 
-window/size/viewport_width=324
+window/size/viewport_width=972
 window/stretch/mode="canvas_items"
 window/size/width=1366
 window/size/height=768
