@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://cjshm244ivhhy"]
+[gd_scene load_steps=22 format=3 uid="uid://cjshm244ivhhy"]
 
 [ext_resource type="Texture2D" uid="uid://buao1lsy50ov0" path="res://Assets/wp5071994-3870902222.jpg" id="1_1l0tm"]
 [ext_resource type="Texture2D" uid="uid://dj1olp7v7y623" path="res://Assets/Border.png" id="1_i6g32"]
@@ -10,7 +10,6 @@
 [ext_resource type="Texture2D" uid="uid://8u6irg4mqp6e" path="res://Assets/backgrounds/shopgrid.png" id="8_ldgsr"]
 [ext_resource type="Script" path="res://Scripts/character_panel.gd" id="8_v158k"]
 [ext_resource type="FontFile" uid="uid://bio3nen3jm8sf" path="res://Assets/Font/PlayfairDisplay-Black.ttf" id="9_h4fw4"]
-[ext_resource type="Script" uid="uid://4dy8q20p0h11" path="res://Scenes/aa_label.gd" id="11_o5yvi"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_v158k"]
 texture = ExtResource("1_1l0tm")
@@ -78,18 +77,15 @@ corner_radius_bottom_left = 7
 [sub_resource type="GDScript" id="GDScript_rku1e"]
 script/source = "extends ProgressBar
 
+@export var recharge_time: float = 5.0
 @export var auto_start: bool = true
 
-@export var recharge_time: float = Shared.aa_cooldown
 @onready var timer = $Timer
-@onready var board = Board
-
-@export var is_game_over: bool = false
 
 func _ready():
 	min_value = 0
 	max_value = 100
-	value = 100
+	value = 0
 	
 	timer.wait_time = 0.1
 	timer.timeout.connect(_on_timer_timeout)
@@ -98,7 +94,7 @@ func _ready():
 		start_recharge()
 
 func _input(event):
-	if (event is InputEventKey and event.pressed and event.keycode == KEY_P) and value == max_value:
+	if event.is_action_pressed(\"ui_accept\") or (event is InputEventKey and event.pressed and event.keycode == KEY_P):
 		reset_progress()
 
 func start_recharge():
@@ -113,20 +109,15 @@ func reset_progress():
 	start_recharge()  # Automatically start recharging again
 
 func _on_timer_timeout():
-	if !is_game_over:
-		var increment = (max_value / recharge_time) * timer.wait_time
-		value += increment
-		
-		if value >= max_value:
-			value = max_value
-			timer.stop()
-			fully_charged.emit()
+	var increment = (max_value / recharge_time) * timer.wait_time
+	value += increment
+	
+	if value >= max_value:
+		value = max_value
+		timer.stop()
+		fully_charged.emit()
 
 signal fully_charged
-
-
-func _on_board_game_over() -> void:
-	is_game_over = true
 "
 
 [node name="main" type="Node"]
@@ -423,7 +414,6 @@ theme_override_font_sizes/font_size = 30
 text = "Nume Abilitate"
 horizontal_alignment = 1
 vertical_alignment = 1
-script = ExtResource("11_o5yvi")
 
 [node name="ProgressBar" type="ProgressBar" parent="Ability/VBoxContainer"]
 layout_mode = 2
@@ -435,5 +425,3 @@ show_percentage = false
 script = SubResource("GDScript_rku1e")
 
 [node name="Timer" type="Timer" parent="Ability/VBoxContainer/ProgressBar"]
-
-[connection signal="game_over" from="Board" to="Ability/VBoxContainer/ProgressBar" method="_on_board_game_over"]
