@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cjshm244ivhhy"]
+[gd_scene load_steps=15 format=3 uid="uid://cjshm244ivhhy"]
 
 [ext_resource type="Texture2D" uid="uid://buao1lsy50ov0" path="res://Assets/wp5071994-3870902222.jpg" id="1_1l0tm"]
 [ext_resource type="Texture2D" uid="uid://dj1olp7v7y623" path="res://Assets/Border.png" id="1_i6g32"]
@@ -11,6 +11,37 @@
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_v158k"]
 texture = ExtResource("1_1l0tm")
 modulate_color = Color(0.298039, 0.298039, 0.298039, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1l0tm"]
+bg_color = Color(0.141176, 0.160784, 0.184314, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.00392157, 0.00392157, 0.00392157, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="LabelSettings" id="LabelSettings_v158k"]
+font_size = 23
+
+[sub_resource type="LabelSettings" id="LabelSettings_h4fw4"]
+font_size = 28
+font_color = Color(1, 1, 0.0156863, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ldgsr"]
+font_size = 28
+font_color = Color(1, 0.054902, 1, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_o5yvi"]
+font_size = 28
+font_color = Color(0.428517, 0.278865, 0.173001, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_rku1e"]
+font_size = 28
+font_color = Color(0.0588235, 0.662745, 0.133333, 1)
 
 [node name="main" type="Node"]
 
@@ -74,3 +105,170 @@ horizontal_alignment = 1
 script = ExtResource("5_ldgsr")
 
 [node name="UI" parent="." instance=ExtResource("6_o5yvi")]
+
+[node name="Stats_panel" type="Panel" parent="."]
+offset_left = 209.0
+offset_top = -535.0
+offset_right = 626.0
+offset_bottom = -254.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_1l0tm")
+
+[node name="GridContainer" type="HBoxContainer" parent="Stats_panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = -5.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Game_Info_Panel" type="Panel" parent="Stats_panel/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Stats_panel/GridContainer/Game_Info_Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Stats_panel/GridContainer/Game_Info_Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Stats_panel/GridContainer/Game_Info_Panel/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "MONEY"
+label_settings = SubResource("LabelSettings_v158k")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Value" type="Label" parent="Stats_panel/GridContainer/Game_Info_Panel/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "3$"
+label_settings = SubResource("LabelSettings_h4fw4")
+horizontal_alignment = 1
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="Stats_panel/GridContainer/Game_Info_Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label2" type="Label" parent="Stats_panel/GridContainer/Game_Info_Panel/VBoxContainer/VBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "SPEED"
+label_settings = SubResource("LabelSettings_v158k")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Value2" type="Label" parent="Stats_panel/GridContainer/Game_Info_Panel/VBoxContainer/VBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "12"
+label_settings = SubResource("LabelSettings_ldgsr")
+horizontal_alignment = 1
+
+[node name="Round_Info_Panel" type="Panel" parent="Stats_panel/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Stats_panel/GridContainer/Round_Info_Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 5.0
+offset_right = -5.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="Stats_panel/GridContainer/Round_Info_Panel/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Stats_panel/GridContainer/Round_Info_Panel/VBoxContainer2/VBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "POINTS"
+label_settings = SubResource("LabelSettings_v158k")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Value" type="Label" parent="Stats_panel/GridContainer/Round_Info_Panel/VBoxContainer2/VBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "640"
+label_settings = SubResource("LabelSettings_o5yvi")
+horizontal_alignment = 1
+
+[node name="VBoxContainer4" type="VBoxContainer" parent="Stats_panel/GridContainer/Round_Info_Panel/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Stats_panel/GridContainer/Round_Info_Panel/VBoxContainer2/VBoxContainer4"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "NEEDED POINTS"
+label_settings = SubResource("LabelSettings_v158k")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Value" type="Label" parent="Stats_panel/GridContainer/Round_Info_Panel/VBoxContainer2/VBoxContainer4"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "1500"
+label_settings = SubResource("LabelSettings_rku1e")
+horizontal_alignment = 1
+
+[node name="Inventory" type="Panel" parent="."]
+anchors_preset = -1
+anchor_left = 1.363
+anchor_top = 0.218
+anchor_right = 1.363
+anchor_bottom = 0.218
+offset_left = -199.612
+offset_top = -139.264
+offset_right = 194.388
+offset_bottom = 158.736
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 20.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_1l0tm")
+
+[node name="GridTexture" type="TextureRect" parent="Inventory"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -192.0
+offset_top = -144.0
+offset_right = 1344.0
+offset_bottom = 1008.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_1l0tm")
+expand_mode = 1
+stretch_mode = 1
