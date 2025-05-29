@@ -27,6 +27,8 @@ const Tetromino = preload("res://Scenes/Tetrominos/tetromino.tscn")
 @onready var score = $"../Score"
 
 func _ready() -> void:
+	$MusicPlayer.play()
+	
 	lines.clear()
 	
 	var shop_info = get_node("../ShopInfo")
