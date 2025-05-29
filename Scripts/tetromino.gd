@@ -81,6 +81,8 @@ func _input(_event):
 		rotate_tetromino(-1)
 	if Input.is_action_pressed("rotate_right"):
 		rotate_tetromino(1)
+	#if Input.is_action_pressed("active_ability"):
+		#use_ability();
 
 func move(direction: Vector2) -> bool:
 

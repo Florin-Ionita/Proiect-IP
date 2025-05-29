@@ -1,5 +1,5 @@
 extends Node
 
 enum Character_names{
-	Zilean, Inginer, Matei, George
+	Chronus, Inginer, Matei, George
 }

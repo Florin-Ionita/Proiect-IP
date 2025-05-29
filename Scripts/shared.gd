@@ -52,6 +52,10 @@ var data = {
 	Tetromino.Z: preload("res://Resources/z_piece_data.tres")
 }
 
-var selected_character:String = ""
 var clockwise_rotation_matrix = [Vector2(0, -1), Vector2(1, 0)]
 var counter_clockwise_rotation_matrix = [Vector2(0,1), Vector2(-1, 0)]
+
+var selected_character:String = ""
+var active_ability:String = ""
+
+var aa_cooldown = 1.0
