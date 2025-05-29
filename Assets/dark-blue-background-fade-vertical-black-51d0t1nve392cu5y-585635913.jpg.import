@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://btu60diraatfo"
-path="res://.godot/imported/BlockAssets.png-05dc6ccddb5718f76e9f2044679d9067.ctex"
+uid="uid://dk7a2fcoxcmlt"
+path="res://.godot/imported/dark-blue-background-fade-vertical-black-51d0t1nve392cu5y-585635913.jpg-660a3c5a648e0741f4d2dd846b1d861b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/BlockAssets.png"
-dest_files=["res://.godot/imported/BlockAssets.png-05dc6ccddb5718f76e9f2044679d9067.ctex"]
+source_file="res://Assets/dark-blue-background-fade-vertical-black-51d0t1nve392cu5y-585635913.jpg"
+dest_files=["res://.godot/imported/dark-blue-background-fade-vertical-black-51d0t1nve392cu5y-585635913.jpg-660a3c5a648e0741f4d2dd846b1d861b.ctex"]
 
 [params]
 
