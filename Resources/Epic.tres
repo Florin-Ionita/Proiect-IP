@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://mqo40hoxiaby"]
+
+[ext_resource type="Texture2D" uid="uid://hiblpkalgvb2" path="res://Assets/Rarities/Epic.png" id="1_1ww3j"]
+[ext_resource type="Script" uid="uid://bnnpdtyi34jqe" path="res://Scripts/rarity_dat.gd" id="2_1ww3j"]
+
+[resource]
+script = ExtResource("2_1ww3j")
+icon = ExtResource("1_1ww3j")
+Rarity = "Epic"

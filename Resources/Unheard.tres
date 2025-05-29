@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://cl2wa1txa22d7"]
+
+[ext_resource type="Texture2D" uid="uid://cvw1wdmo1x444" path="res://Assets/Rarities/Unheard.png" id="1_jhpy2"]
+[ext_resource type="Script" uid="uid://bnnpdtyi34jqe" path="res://Scripts/rarity_dat.gd" id="2_jhpy2"]
+
+[resource]
+script = ExtResource("2_jhpy2")
+icon = ExtResource("1_jhpy2")
+Rarity = "Unheard"

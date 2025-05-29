@@ -1,0 +1,22 @@
+[
+	{
+		"ID": 101,
+		"Name": "Give me more",
+		"Rarity": "Common"
+	},
+	{
+		"ID": 102,
+		"Name": "See the future",
+		"Rarity": "Rare"
+	},
+	{
+		"ID": 103,
+		"Name": "Colorphile",
+		"Rarity": "Epic"
+	},
+	{
+		"ID": 104,
+		"Name": "-1 line",
+		"Rarity": "Unheard"
+	}
+]

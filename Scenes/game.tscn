@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://cjshm244ivhhy"]
+[gd_scene load_steps=20 format=3 uid="uid://cjshm244ivhhy"]
 
 [ext_resource type="Texture2D" uid="uid://buao1lsy50ov0" path="res://Assets/wp5071994-3870902222.jpg" id="1_1l0tm"]
 [ext_resource type="Texture2D" uid="uid://dj1olp7v7y623" path="res://Assets/Border.png" id="1_i6g32"]
@@ -7,9 +7,11 @@
 [ext_resource type="PackedScene" uid="uid://c4j05v6wfo823" path="res://Scenes/tetromino.tscn" id="4_h4fw4"]
 [ext_resource type="Script" uid="uid://btfta0160f7eg" path="res://Scripts/piece_spawner.gd" id="5_ldgsr"]
 [ext_resource type="PackedScene" uid="uid://ct2meksk8huhw" path="res://Scenes/ui.tscn" id="6_o5yvi"]
-[ext_resource type="Texture2D" uid="uid://8u6irg4mqp6e" path="res://Assets/backgrounds/shopgrid.png" id="8_ldgsr"]
 [ext_resource type="Script" uid="uid://j06tod83p1jd" path="res://Scripts/character_panel.gd" id="8_v158k"]
 [ext_resource type="FontFile" uid="uid://bio3nen3jm8sf" path="res://Assets/Font/PlayfairDisplay-Black.ttf" id="9_h4fw4"]
+[ext_resource type="Texture2D" uid="uid://b8dda1wwjdkfm" path="res://Assets/backgrounds/character_bg.png" id="11_o5yvi"]
+[ext_resource type="Script" uid="uid://cjc7useliuseh" path="res://Scripts/inventory.gd" id="11_rku1e"]
+[ext_resource type="Script" uid="uid://cjt8dg7qnabwq" path="res://Scripts/loot_panel.gd" id="13_rfjv2"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_v158k"]
 texture = ExtResource("1_1l0tm")
@@ -46,8 +48,6 @@ font_color = Color(0.428517, 0.278865, 0.173001, 1)
 font_size = 28
 font_color = Color(0.0588235, 0.662745, 0.133333, 1)
 
-[sub_resource type="Theme" id="Theme_o5yvi"]
-
 [node name="main" type="Node"]
 
 [node name="Panel" type="Panel" parent="."]
@@ -56,6 +56,7 @@ offset_top = -648.0
 offset_right = 5250.0
 offset_bottom = 3672.0
 scale = Vector2(0.3, 0.3)
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_v158k")
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -243,43 +244,6 @@ text = "1500"
 label_settings = SubResource("LabelSettings_rku1e")
 horizontal_alignment = 1
 
-[node name="Inventory" type="Panel" parent="."]
-anchors_preset = -1
-anchor_left = 1.363
-anchor_top = 0.218
-anchor_right = 1.363
-anchor_bottom = 0.218
-offset_left = -1164.84
-offset_top = -139.264
-offset_right = -770.836
-offset_bottom = 158.736
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-size_flags_stretch_ratio = 20.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_1l0tm")
-
-[node name="GridTexture" type="TextureRect" parent="Inventory"]
-self_modulate = Color(0.470076, 0.470076, 0.470076, 1)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -192.0
-offset_top = -144.0
-offset_right = 1344.0
-offset_bottom = 1008.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(0.25, 0.25)
-theme = SubResource("Theme_o5yvi")
-texture = ExtResource("8_ldgsr")
-expand_mode = 1
-stretch_mode = 1
-
 [node name="CharacterPanel" type="Panel" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
@@ -318,3 +282,99 @@ grow_horizontal = 2
 theme_override_fonts/font = ExtResource("9_h4fw4")
 theme_override_font_sizes/font_size = 35
 uppercase = true
+
+[node name="Inventory" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 226.0
+offset_top = 9.0
+offset_right = 691.0
+offset_bottom = 309.0
+mouse_filter = 2
+script = ExtResource("11_rku1e")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Inventory"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("11_o5yvi")
+
+[node name="MarginContainer" type="MarginContainer" parent="Inventory/NinePatchRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -222.0
+offset_top = -153.0
+offset_right = 222.0
+offset_bottom = 153.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Inventory/NinePatchRect/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="Header" type="HBoxContainer" parent="Inventory/NinePatchRect/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="TitleBackground" type="TextureRect" parent="Inventory/NinePatchRect/MarginContainer/VBoxContainer/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="Inventory/NinePatchRect/MarginContainer/VBoxContainer/Header/TitleBackground"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Shop
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="Inventory/NinePatchRect/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+columns = 7
+
+[node name="Upgrades" type="Control" parent="."]
+custom_minimum_size = Vector2(1200, 648)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1000.0
+offset_right = -772.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+mouse_filter = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="Upgrades"]
+custom_minimum_size = Vector2(1200, 648)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("13_rfjv2")
+
+[node name="LootGrid" type="GridContainer" parent="Upgrades/PanelContainer"]
+custom_minimum_size = Vector2(1200, 648)
+layout_mode = 2
+mouse_filter = 2
+columns = 5

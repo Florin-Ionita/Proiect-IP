@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://c0cah0kadr313"]
+
+[ext_resource type="Texture2D" uid="uid://bquxe5m6aoyd" path="res://Assets/Rarities/Rare.png" id="1_2oyfn"]
+[ext_resource type="Script" uid="uid://bnnpdtyi34jqe" path="res://Scripts/rarity_dat.gd" id="2_psp2g"]
+
+[resource]
+script = ExtResource("2_psp2g")
+icon = ExtResource("1_2oyfn")
+name = "Rare"

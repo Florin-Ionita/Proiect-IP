@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://bbekb3uhfdn2w"]
+
+[ext_resource type="Texture2D" uid="uid://swuu1xpp344r" path="res://Assets/Rarities/Common.png" id="1_e31d4"]
+[ext_resource type="Script" uid="uid://bnnpdtyi34jqe" path="res://Scripts/rarity_dat.gd" id="2_e31d4"]
+
+[resource]
+script = ExtResource("2_e31d4")
+icon = ExtResource("1_e31d4")
+Rarity = "Common"

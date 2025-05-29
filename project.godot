@@ -18,6 +18,8 @@ config/icon="res://icon.png"
 [autoload]
 
 Shared="*res://Scripts/shared.gd"
+GameData="*res://Scripts/Singletons/GameData.gd"
+PlayerData="*res://Scripts/Singletons/PlayerData.gd"
 
 [display]
 
