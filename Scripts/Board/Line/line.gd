@@ -17,6 +17,12 @@ func add_block_at(pos: int, block: Area2D):
 	else:
 		push_error("Position out of bounds!")
 
+func calculate_points(mult = 1) -> int:
+	var sum: int = 0;
+	for block in blocks:
+		sum += mult * block.get_score()
+	return sum
+
 func is_full():
 	return BoardShared.block_length == get_child_count()
 

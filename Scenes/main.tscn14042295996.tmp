@@ -1,10 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://cjshm244ivhhy"]
+[gd_scene load_steps=6 format=3 uid="uid://cjshm244ivhhy"]
 
 [ext_resource type="Texture2D" uid="uid://dj1olp7v7y623" path="res://Assets/Border.png" id="1_2kdh7"]
 [ext_resource type="Texture2D" uid="uid://dddenph2txf1h" path="res://Assets/Grid.png" id="2_7mxh0"]
 [ext_resource type="Script" uid="uid://de5ilhgxfdfg7" path="res://Scripts/Board/board.gd" id="3_kry3j"]
 [ext_resource type="Script" uid="uid://btfta0160f7eg" path="res://Scripts/piece_spawner.gd" id="3_ygpth"]
-[ext_resource type="PackedScene" uid="uid://bwe5p0v7ark1r" path="res://Scenes/Score/score.tscn" id="4_21xkr"]
 [ext_resource type="PackedScene" uid="uid://ct2meksk8huhw" path="res://Scenes/ui.tscn" id="6_5ie2u"]
 
 [node name="main" type="Node"]
@@ -56,5 +55,3 @@ horizontal_alignment = 1
 script = ExtResource("3_ygpth")
 
 [node name="UI" parent="." instance=ExtResource("6_5ie2u")]
-
-[node name="Score" parent="." instance=ExtResource("4_21xkr")]

@@ -4,17 +4,31 @@ class_name Board
 
 signal tetromino_locked
 signal game_over
+signal shop
+signal boss(ability: String)
 
 var lines: Array[Line] = []
+var in_shop = false
+var fall_time = 1.0
+
+# Boss vars
+var is_boss = false
+var double_point = false
+var double_speed = false
+var no_active = false
+var no_next = false
+var no_mult_point = false
+
 
 const Tetromino = preload("res://Scenes/Tetrominos/tetromino.tscn")
 
 @onready var panel_container = $"../PanelContainer"
 @onready var line_scene = preload("res://Scenes/Board/Line/line.tscn")
-
+@onready var score = $"../Score"
 
 func _ready() -> void:
 	lines.clear()
+	score.set_goal(300)
 	for pos in range(BoardShared.block_height):
 		var line = line_scene.instantiate() as Line
 		add_child(line)
@@ -25,9 +39,14 @@ func spawn_tetromino(data: TetrominoShared.TetrominoData, is_played: bool, spawn
 	var tetromino = Tetromino.instantiate()
 	tetromino.call_deferred("setup", data.shape, data.color, data.effect, is_played)
 	
+	# Seth the fall time
+	if !double_speed:
+		tetromino.get_node("Timer").wait_time = fall_time
+	else:
+		tetromino.get_node("Timer").wait_time = fall_time / 2
+
 	# Set the is played variable
 	tetromino.is_played = is_played
-	
 	
 	if tetromino.is_played:
 		var other_pieces = get_all_blocks()
@@ -38,6 +57,30 @@ func spawn_tetromino(data: TetrominoShared.TetrominoData, is_played: bool, spawn
 		tetromino.scale = Vector2(0.5, 0.5)
 		panel_container.add_child(tetromino)
 		tetromino.set_position(spawn_position)
+
+func set_boss_ability():
+	randomize() 
+	match 1 % 5:
+		0: 
+			double_point = true
+			print("double_point")
+			boss.emit("Double Points Needed for Goal")
+		1: 
+			double_speed = true
+			print("double_speed")
+			boss.emit("The Pieces Fall Twice as Fast as Normal")
+		2: 
+			no_active = true
+			print("no_active")
+			boss.emit("You cannot Use your Active ")
+		3: 
+			no_next = true
+			print("no_next")
+			boss.emit("You cannot See Whar is Next")
+		4: 
+			no_mult_point = true
+			print("no_mult_point")
+			boss.emit("You do not Get any Multiplier for More Lines Cleared")
 
 func get_lines():
 	return lines
@@ -60,11 +103,13 @@ func get_all_blocks():
 
 # Adds the blocks from the tetrominos to the lines
 func add_tetromino_to_lines(tetromino: Tetromino):
-	
 	var tetromino_blocks: Array = tetromino.get_children().filter(func (c): return c is Block)
 	for block in tetromino_blocks:
 		var pos_y = (block.global_position.y + 456) / block.get_size().y
 		var pos_x = (block.global_position.x + 216) / block.get_size().x
+	
+		# Retain the "highest" line it reaches
+		score.set_high(pos_y)
 	
 		var block_line: Line = lines[pos_y]
 		block_line.add_block_at(pos_x, block)
@@ -72,7 +117,6 @@ func add_tetromino_to_lines(tetromino: Tetromino):
 
 # Shifts the lines Array + moves their global position too
 func move_lines_down(start):
-	# 1) Walk from the row just *above* start, down to the top
 	for i in range(start, 0, -1):
 		var target_line = lines[i]
 		var source_line = lines[i - 1]
@@ -92,11 +136,24 @@ func move_lines_down(start):
 
 # Check to see what lines are full, and remove them
 func remove_full_lines():
+	var mult = 1
+	var win
 	for i in range(lines.size()):
 		var line: Line = lines[i]
 		if (line.is_full()):
+			# Add the points
+			win = score.add_points(line.calculate_points(mult))
+			mult *= 2
+			
+			if no_mult_point:
+				mult = 1
+			
+			# Empty the line
 			line.empty();
 			move_lines_down(i);
+	
+	if win:
+		go_shop()
 
 # Called when a tetromino got locked
 func on_tetromino_locked(tetromino: Tetromino):
@@ -105,8 +162,9 @@ func on_tetromino_locked(tetromino: Tetromino):
 	tetromino.queue_free()
 	
 	# Remove the child from the preview
-	var panel_tetromino: Tetromino = panel_container.get_children().filter(func (c): return c is Tetromino)[0]
-	panel_tetromino.queue_free()
+	if !no_next:
+		var panel_tetromino: Tetromino = panel_container.get_children().filter(func (c): return c is Tetromino)[0]
+		panel_tetromino.queue_free()
 	
 	# Check for full lines
 	remove_full_lines();
@@ -117,6 +175,59 @@ func on_tetromino_locked(tetromino: Tetromino):
 	# Check for game over
 	check_game_over()
 
+func empty_table():
+	for line in lines:
+		line.empty()
+	
+
+func _input(event):
+	if in_shop && event.is_action_pressed("rotate_left"):
+		in_shop = false
+		shop.emit()
+		
+# When the level is complete
+func go_shop():
+	in_shop = true
+	
+	# Calculate the money earned
+	score.calculate_money_gain()
+	print("Money: ", score.money)
+	
+	# Clear the table
+	empty_table()
+	
+	# Remove the child from the preview
+	var panel_tetromino: Tetromino = panel_container.get_children().filter(func (c): return c is Tetromino)[0]
+	panel_tetromino.queue_free()
+	
+	# Set next level
+	score.level += 1;
+	
+	# See boss and choose one
+	if score.level % 2 == 0:
+		is_boss = true
+		set_boss_ability()
+	else:
+		is_boss = false
+		double_point = false
+		double_speed = false
+		no_active = false
+		no_next = false
+		no_mult_point = false
+		
+	# Set the next points
+	score.set_points(0)
+	score.calculate_next_goal()
+	if double_point:
+		score.set_goal(score.goal * 2)
+	
+	# Calculate new fall time
+	fall_time /= 1.2
+	if (fall_time < 0.01):
+		fall_time = 0.01
+	
+	# Emit a signal in case it is needed
+	shop.emit()
 	
 func check_game_over():
 	var is_game_over = lines[0].get_children().filter(func (c): return c is Block).size() != 0; # If there is a block on top line
