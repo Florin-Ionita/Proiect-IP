@@ -179,18 +179,18 @@ func rotate_tetromino(direction: int):
 	
 	#hard_drop_ghost()
 
-func _input(event):
-	if event.is_action_pressed("left"):
+func _input(_event):
+	if Input.is_action_just_pressed("left"):
 		move(Vector2.LEFT)
-	elif event.is_action_pressed("right"):
+	elif Input.is_action_just_pressed("right"):
 		move(Vector2.RIGHT)
-	elif event.is_action_pressed("down"):
+	elif Input.is_action_just_pressed("down"):
 		move(Vector2.DOWN)
-	elif event.is_action_pressed("hard_drop"):
+	elif Input.is_action_just_pressed("hard_drop"):
 		hard_drop()
-	elif event.is_action_pressed("rotate_left"):
+	elif Input.is_action_just_pressed("rotate_left"):
 		rotate_tetromino(-1)
-	elif event.is_action_pressed("rotate_right"):
+	elif Input.is_action_just_pressed("rotate_right"):
 		rotate_tetromino(1)
 	#ghost_tetromino.queue_free()
 

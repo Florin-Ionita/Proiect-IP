@@ -10,6 +10,8 @@ var next_data
 var is_game_over = false
 var in_shop = false
 
+var ability_available = true
+
 func _ready():
 	# Create data for the next 2 pieces
 	current_data = create_tetromino_data()
@@ -25,6 +27,21 @@ func _ready():
 	board.game_over.connect(on_game_over)
 	board.shop.connect(on_shop)
 	
+
+func on_ability():
+	ability_available = false
+	board.remove_panel_tetromino()
+	next_data = create_tetromino_data()
+	if !board.no_next:
+		board.spawn_tetromino(next_data, false, Vector2(90, 50))
+	return
+
+func _on_ability_charge():
+	ability_available = true
+
+func _input(_event):
+	if ability_available && !board.no_active && Input.is_action_just_pressed("ability"):
+		on_ability()
 
 func create_tetromino_data() -> TetrominoShared.TetrominoData:
 	var data = TetrominoShared.TetrominoData.new()

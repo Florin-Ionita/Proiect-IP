@@ -1,0 +1,118 @@
+[gd_scene load_steps=5 format=3 uid="uid://bhvrreb7k5st"]
+
+[ext_resource type="Script" uid="uid://e85cg5phtnv6" path="res://Scripts/Labels/Ability/aa_label.gd" id="1_vw4y3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ldgsr"]
+bg_color = Color(0.617528, 0.159398, 0.0553287, 1)
+border_width_left = 2
+border_width_top = 5
+border_width_right = 2
+border_width_bottom = 5
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o5yvi"]
+bg_color = Color(0.271627, 0.712319, 0, 1)
+border_width_left = 2
+border_width_top = 5
+border_width_right = 2
+border_width_bottom = 5
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
+[sub_resource type="GDScript" id="GDScript_rku1e"]
+script/source = "extends ProgressBar
+
+@export var auto_start: bool = true
+
+@export var recharge_time: float = CharacterShared.aa_cooldown
+@onready var timer = $Timer
+@onready var board = Board
+
+@export var is_game_over: bool = false
+
+func _ready():
+	min_value = 0
+	max_value = 100
+	value = 100
+	
+	timer.wait_time = 0.1
+	timer.timeout.connect(_on_timer_timeout)
+	
+	if auto_start:
+		start_recharge()
+
+func _input(event):
+	if (event is InputEventKey and event.pressed and event.keycode == KEY_P) and value == max_value:
+		reset_progress()
+
+func start_recharge():
+	timer.start()
+
+func stop_recharge():
+	timer.stop()
+
+func reset_progress():
+	value = 0
+	timer.stop()
+	start_recharge()  # Automatically start recharging again
+
+func _on_timer_timeout():
+	if !is_game_over:
+		var increment = (max_value / recharge_time) * timer.wait_time
+		value += increment
+		
+		if value >= max_value:
+			value = max_value
+			timer.stop()
+			fully_charged.emit()
+
+signal fully_charged
+
+
+func _on_board_game_over() -> void:
+	is_game_over = true
+"
+
+[node name="Ability" type="Panel"]
+offset_left = -1134.0
+offset_top = -2.0
+offset_right = -602.0
+offset_bottom = 185.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_top = 2.0
+offset_right = 532.0
+offset_bottom = 187.0
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.43
+theme_override_font_sizes/font_size = 30
+text = "Nume Abilitate"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("1_vw4y3")
+
+[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/background = SubResource("StyleBoxFlat_ldgsr")
+theme_override_styles/fill = SubResource("StyleBoxFlat_o5yvi")
+value = 70.0
+show_percentage = false
+script = SubResource("GDScript_rku1e")
+
+[node name="Timer" type="Timer" parent="VBoxContainer/ProgressBar"]

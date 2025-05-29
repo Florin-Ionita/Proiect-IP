@@ -1,0 +1,214 @@
+[gd_scene load_steps=10 format=3 uid="uid://b16px4afaimhi"]
+
+[ext_resource type="Script" uid="uid://csjfmrhoickys" path="res://Scripts/Characters/character_select.gd" id="1_uelh3"]
+[ext_resource type="Texture2D" uid="uid://buao1lsy50ov0" path="res://Assets/wp5071994-3870902222.jpg" id="2_o8raw"]
+[ext_resource type="Texture2D" uid="uid://d2try8ls8whl5" path="res://Assets/characters/Cronus.png" id="3_krxhl"]
+[ext_resource type="Texture2D" uid="uid://cviqkrfo23kbv" path="res://Assets/characters/Hephaestus.png" id="4_72d1u"]
+[ext_resource type="Texture2D" uid="uid://ch0oke3ocpk6t" path="res://Assets/characters/Precognition.png" id="5_d1kp4"]
+[ext_resource type="Texture2D" uid="uid://cmmgre1mggvjg" path="res://Assets/characters/Wisper.png" id="6_brbi3"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wqg5r"]
+texture = ExtResource("2_o8raw")
+modulate_color = Color(0.298039, 0.298039, 0.298039, 1)
+
+[sub_resource type="Theme" id="Theme_uelh3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o8raw"]
+bg_color = Color(0.144063, 0.144063, 0.144063, 0.917647)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="CharacterSelect" type="Node2D"]
+script = ExtResource("1_uelh3")
+
+[node name="Panel" type="Panel" parent="."]
+offset_right = 972.0
+offset_bottom = 648.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_wqg5r")
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 226.0
+offset_top = 64.0
+offset_right = 746.0
+offset_bottom = 647.0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="GridContainer" type="GridContainer" parent="Panel/MarginContainer"]
+layout_mode = 2
+columns = 2
+
+[node name="Cronus" type="TextureButton" parent="Panel/MarginContainer/GridContainer"]
+layout_mode = 2
+texture_normal = ExtResource("3_krxhl")
+
+[node name="ColorRect" type="ColorRect" parent="Panel/MarginContainer/GridContainer/Cronus"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = 20.0
+offset_right = 60.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0768358, 0.0768358, 0.0768358, 1)
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/GridContainer/Cronus/ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -39.5
+offset_top = -11.5
+offset_right = 39.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Cronus"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="Hephaestus" type="TextureButton" parent="Panel/MarginContainer/GridContainer"]
+layout_mode = 2
+texture_normal = ExtResource("4_72d1u")
+
+[node name="ColorRect" type="ColorRect" parent="Panel/MarginContainer/GridContainer/Hephaestus"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = 20.0
+offset_right = 60.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0784314, 0.0784314, 0.0784314, 1)
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/GridContainer/Hephaestus/ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -51.0
+offset_top = -11.5
+offset_right = 51.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Hephaestus"
+uppercase = true
+
+[node name="Precognition" type="TextureButton" parent="Panel/MarginContainer/GridContainer"]
+layout_mode = 2
+texture_normal = ExtResource("5_d1kp4")
+
+[node name="ColorRect" type="ColorRect" parent="Panel/MarginContainer/GridContainer/Precognition"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = 20.0
+offset_right = 60.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0784314, 0.0784314, 0.0784314, 1)
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/GridContainer/Precognition/ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -51.0
+offset_top = -11.5
+offset_right = 51.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Precognition"
+uppercase = true
+
+[node name="Wisper" type="TextureButton" parent="Panel/MarginContainer/GridContainer"]
+layout_mode = 2
+texture_normal = ExtResource("6_brbi3")
+
+[node name="ColorRect" type="ColorRect" parent="Panel/MarginContainer/GridContainer/Wisper"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = 20.0
+offset_right = 60.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0784314, 0.0784314, 0.0784314, 1)
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/GridContainer/Wisper/ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -51.0
+offset_top = -11.5
+offset_right = 51.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "wisper"
+horizontal_alignment = 1
+uppercase = true
+
+[node name="MarginContainer2" type="MarginContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 324.5
+offset_right = 647.5
+offset_bottom = 69.0
+size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Label" type="Label" parent="Panel/MarginContainer2"]
+layout_mode = 2
+size_flags_vertical = 1
+theme = SubResource("Theme_uelh3")
+theme_type_variation = &"HeaderLarge"
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_o8raw")
+text = "Choose Your Character"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="Panel/MarginContainer/GridContainer/Cronus" to="." method="_on_cronus_pressed"]
+[connection signal="pressed" from="Panel/MarginContainer/GridContainer/Hephaestus" to="." method="_on_hephaestus_pressed"]
+[connection signal="pressed" from="Panel/MarginContainer/GridContainer/Precognition" to="." method="_on_precognition_pressed"]
+[connection signal="pressed" from="Panel/MarginContainer/GridContainer/Wisper" to="." method="_on_wisper_pressed"]

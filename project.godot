@@ -11,21 +11,29 @@ config_version=5
 [application]
 
 config/name="TetrisTutorial"
-run/main_scene="res://Scenes/main.tscn"
+run/main_scene="uid://brkc7kh75vhy4"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://Assets/icon.svg"
 
 [autoload]
 
-Shared="*res://Scripts/shared.gd"
 BlockShared="*res://Scripts/Tetrominos/Blocks/block_props.gd"
 TetrominoShared="*res://Scripts/Tetrominos/tetromino_props.gd"
 BoardShared="*res://Scripts/Board/board_props.gd"
+CharacterShared="*res://Scripts/Characters/character_props.gd"
+GameData="*res://Scripts/Data/game_data.gd"
+PlayerData="*res://Scripts/Data/player_data.gd"
 
 [display]
 
-window/size/viewport_width=324
+window/size/viewport_width=972
 window/stretch/mode="canvas_items"
+window/size/width=1366
+window/size/height=768
+
+[gdnative]
+
+singletons=[]
 
 [input]
 

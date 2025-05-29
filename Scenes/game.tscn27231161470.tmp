@@ -1,0 +1,600 @@
+[gd_scene load_steps=23 format=3 uid="uid://bfd255b3o7jkf"]
+
+[ext_resource type="Texture2D" uid="uid://buao1lsy50ov0" path="res://Assets/wp5071994-3870902222.jpg" id="1_1l0tm"]
+[ext_resource type="Texture2D" uid="uid://dj1olp7v7y623" path="res://Assets/Border.png" id="1_i6g32"]
+[ext_resource type="Texture2D" uid="uid://dddenph2txf1h" path="res://Assets/Grid.png" id="2_1l0tm"]
+[ext_resource type="Script" uid="uid://de5ilhgxfdfg7" path="res://Scripts/Board/board.gd" id="3_v158k"]
+[ext_resource type="Script" uid="uid://btfta0160f7eg" path="res://Scripts/piece_spawner.gd" id="4_h4fw4"]
+[ext_resource type="PackedScene" uid="uid://ct2meksk8huhw" path="res://Scenes/ui.tscn" id="5_ldgsr"]
+[ext_resource type="PackedScene" uid="uid://bwe5p0v7ark1r" path="res://Scenes/Score/score.tscn" id="6_o5yvi"]
+[ext_resource type="Script" path="res://Scripts/character_panel.gd" id="8_ldgsr"]
+[ext_resource type="FontFile" uid="uid://bio3nen3jm8sf" path="res://Assets/Font/PlayfairDisplay-Black.ttf" id="9_o5yvi"]
+[ext_resource type="Script" uid="uid://7acrvtcntlpj" path="res://Scripts/Inventory/inventory.gd" id="10_o5yvi"]
+[ext_resource type="Script" path="res://Scenes/aa_label.gd" id="10_rfjv2"]
+[ext_resource type="Script" uid="uid://cjt8dg7qnabwq" path="res://Scripts/Loot/loot_panel.gd" id="10_rku1e"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_v158k"]
+texture = ExtResource("1_1l0tm")
+modulate_color = Color(0.298039, 0.298039, 0.298039, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1l0tm"]
+bg_color = Color(0.141176, 0.160784, 0.184314, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.00392157, 0.00392157, 0.00392157, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="LabelSettings" id="LabelSettings_v158k"]
+font_size = 23
+
+[sub_resource type="LabelSettings" id="LabelSettings_h4fw4"]
+font_size = 28
+font_color = Color(1, 1, 0.0156863, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ldgsr"]
+font_size = 28
+font_color = Color(1, 0.054902, 1, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_o5yvi"]
+font_size = 28
+font_color = Color(0.428517, 0.278865, 0.173001, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_rku1e"]
+font_size = 28
+font_color = Color(0.0588235, 0.662745, 0.133333, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ldgsr"]
+bg_color = Color(0.617528, 0.159398, 0.0553287, 1)
+border_width_left = 2
+border_width_top = 5
+border_width_right = 2
+border_width_bottom = 5
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o5yvi"]
+bg_color = Color(0.271627, 0.712319, 0, 1)
+border_width_left = 2
+border_width_top = 5
+border_width_right = 2
+border_width_bottom = 5
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
+[sub_resource type="GDScript" id="GDScript_rku1e"]
+script/source = "extends ProgressBar
+
+@export var auto_start: bool = true
+
+@export var recharge_time: float = Shared.aa_cooldown
+@onready var timer = $Timer
+@onready var board = Board
+
+@export var is_game_over: bool = false
+
+func _ready():
+	min_value = 0
+	max_value = 100
+	value = 100
+	
+	timer.wait_time = 0.1
+	timer.timeout.connect(_on_timer_timeout)
+	
+	if auto_start:
+		start_recharge()
+
+func _input(event):
+	if (event is InputEventKey and event.pressed and event.keycode == KEY_P) and value == max_value:
+		reset_progress()
+
+func start_recharge():
+	timer.start()
+
+func stop_recharge():
+	timer.stop()
+
+func reset_progress():
+	value = 0
+	timer.stop()
+	start_recharge()  # Automatically start recharging again
+
+func _on_timer_timeout():
+	if !is_game_over:
+		var increment = (max_value / recharge_time) * timer.wait_time
+		value += increment
+		
+		if value >= max_value:
+			value = max_value
+			timer.stop()
+			fully_charged.emit()
+
+signal fully_charged
+
+
+func _on_board_game_over() -> void:
+	is_game_over = true
+"
+
+[node name="main" type="Node"]
+
+[node name="Panel" type="Panel" parent="."]
+offset_left = -1230.0
+offset_top = -648.0
+offset_right = 5250.0
+offset_bottom = 3672.0
+scale = Vector2(0.3, 0.3)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_v158k")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.5, 0.5)
+
+[node name="Border" type="TextureRect" parent="."]
+offset_left = -256.0
+offset_top = -496.0
+offset_right = 1794.0
+offset_bottom = 3474.0
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_i6g32")
+
+[node name="GridTexture" type="TextureRect" parent="Border"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -961.0
+offset_top = -1921.0
+offset_right = 959.0
+offset_bottom = 1928.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_1l0tm")
+stretch_mode = 1
+
+[node name="Board" type="Node" parent="."]
+script = ExtResource("3_v158k")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+_import_path = NodePath("")
+unique_name_in_owner = false
+process_mode = 0
+process_priority = 0
+process_physics_priority = 0
+process_thread_group = 0
+physics_interpolation_mode = 2
+auto_translate_mode = 0
+editor_description = ""
+visible = true
+modulate = Color(1, 1, 1, 1)
+self_modulate = Color(1, 1, 1, 1)
+show_behind_parent = false
+top_level = false
+clip_children = 0
+light_mask = 1
+visibility_layer = 1
+z_index = 0
+z_as_relative = true
+y_sort_enabled = false
+texture_filter = 0
+texture_repeat = 0
+material = null
+use_parent_material = false
+clip_contents = false
+custom_minimum_size = Vector2(200, 100)
+layout_direction = 0
+layout_mode = 3
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = -100.0
+offset_top = -631.0
+offset_right = 100.0
+offset_bottom = -531.0
+grow_horizontal = 1
+grow_vertical = 1
+rotation = 0.0
+scale = Vector2(1, 1)
+pivot_offset = Vector2(0, 0)
+size_flags_horizontal = 1
+size_flags_vertical = 1
+size_flags_stretch_ratio = 1.0
+localize_numeral_system = true
+tooltip_text = ""
+tooltip_auto_translate_mode = 0
+focus_neighbor_left = NodePath("")
+focus_neighbor_top = NodePath("")
+focus_neighbor_right = NodePath("")
+focus_neighbor_bottom = NodePath("")
+focus_next = NodePath("")
+focus_previous = NodePath("")
+focus_mode = 0
+mouse_filter = 0
+mouse_force_pass_scroll_events = true
+mouse_default_cursor_shape = 0
+theme = null
+theme_type_variation = &""
+script = null
+
+[node name="Label" type="Label" parent="PanelContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "NEXT TETROMINO:"
+horizontal_alignment = 1
+
+[node name="PieceSpawner" type="Node" parent="."]
+script = ExtResource("4_h4fw4")
+
+[node name="UI" parent="." instance=ExtResource("5_ldgsr")]
+
+[node name="Score" parent="." instance=ExtResource("6_o5yvi")]
+
+[node name="Stats_panel" type="Panel" parent="."]
+self_modulate = Color(0, 0, 0, 1)
+offset_left = 150.0
+offset_top = -535.0
+offset_right = 567.0
+offset_bottom = -254.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_1l0tm")
+
+[node name="GridContainer" type="HBoxContainer" parent="Stats_panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = -5.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Game_Info_Panel" type="Panel" parent="Stats_panel/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Stats_panel/GridContainer/Game_Info_Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Stats_panel/GridContainer/Game_Info_Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Stats_panel/GridContainer/Game_Info_Panel/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "MONEY"
+label_settings = SubResource("LabelSettings_v158k")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Value" type="Label" parent="Stats_panel/GridContainer/Game_Info_Panel/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "3$"
+label_settings = SubResource("LabelSettings_h4fw4")
+horizontal_alignment = 1
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="Stats_panel/GridContainer/Game_Info_Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label2" type="Label" parent="Stats_panel/GridContainer/Game_Info_Panel/VBoxContainer/VBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "SPEED"
+label_settings = SubResource("LabelSettings_v158k")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Value2" type="Label" parent="Stats_panel/GridContainer/Game_Info_Panel/VBoxContainer/VBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "12"
+label_settings = SubResource("LabelSettings_ldgsr")
+horizontal_alignment = 1
+
+[node name="Round_Info_Panel" type="Panel" parent="Stats_panel/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Stats_panel/GridContainer/Round_Info_Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 5.0
+offset_right = -5.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="Stats_panel/GridContainer/Round_Info_Panel/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Stats_panel/GridContainer/Round_Info_Panel/VBoxContainer2/VBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "POINTS"
+label_settings = SubResource("LabelSettings_v158k")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Value" type="Label" parent="Stats_panel/GridContainer/Round_Info_Panel/VBoxContainer2/VBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "640"
+label_settings = SubResource("LabelSettings_o5yvi")
+horizontal_alignment = 1
+
+[node name="VBoxContainer4" type="VBoxContainer" parent="Stats_panel/GridContainer/Round_Info_Panel/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Stats_panel/GridContainer/Round_Info_Panel/VBoxContainer2/VBoxContainer4"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "NEEDED POINTS"
+label_settings = SubResource("LabelSettings_v158k")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Value" type="Label" parent="Stats_panel/GridContainer/Round_Info_Panel/VBoxContainer2/VBoxContainer4"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "1500"
+label_settings = SubResource("LabelSettings_rku1e")
+horizontal_alignment = 1
+
+[node name="CharacterPanel" type="Panel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1136.0
+offset_top = -447.0
+offset_right = -1578.0
+offset_bottom = -716.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("8_ldgsr")
+
+[node name="TextureRect" type="TextureRect" parent="CharacterPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="CharacterPanel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("9_o5yvi")
+theme_override_font_sizes/font_size = 35
+uppercase = true
+
+[node name="Ability" type="Panel" parent="."]
+offset_left = -1134.0
+offset_top = -2.0
+offset_right = -602.0
+offset_bottom = 185.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Ability"]
+layout_mode = 0
+offset_top = 2.0
+offset_right = 532.0
+offset_bottom = 187.0
+
+[node name="Label" type="Label" parent="Ability/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.43
+theme_override_font_sizes/font_size = 30
+text = "Nume Abilitate"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("10_rfjv2")
+
+[node name="ProgressBar" type="ProgressBar" parent="Ability/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/background = SubResource("StyleBoxFlat_ldgsr")
+theme_override_styles/fill = SubResource("StyleBoxFlat_o5yvi")
+value = 70.0
+show_percentage = false
+script = SubResource("GDScript_rku1e")
+
+[node name="Timer" type="Timer" parent="Ability/VBoxContainer/ProgressBar"]
+
+[node name="Inventory" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 226.0
+offset_top = 9.0
+offset_right = 691.0
+offset_bottom = 309.0
+mouse_filter = 2
+script = ExtResource("10_o5yvi")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Inventory"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Inventory/NinePatchRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -222.0
+offset_top = -153.0
+offset_right = 222.0
+offset_bottom = 153.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Inventory/NinePatchRect/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="Header" type="HBoxContainer" parent="Inventory/NinePatchRect/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="TitleBackground" type="TextureRect" parent="Inventory/NinePatchRect/MarginContainer/VBoxContainer/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="Inventory/NinePatchRect/MarginContainer/VBoxContainer/Header/TitleBackground"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Shop
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="Inventory/NinePatchRect/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+columns = 7
+
+[node name="Upgrades" type="Control" parent="."]
+custom_minimum_size = Vector2(1200, 648)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1000.0
+offset_right = -772.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+mouse_filter = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="Upgrades"]
+_import_path = NodePath("")
+unique_name_in_owner = false
+process_mode = 0
+process_priority = 0
+process_physics_priority = 0
+process_thread_group = 0
+physics_interpolation_mode = 2
+auto_translate_mode = 0
+editor_description = ""
+visible = true
+modulate = Color(1, 1, 1, 1)
+self_modulate = Color(1, 1, 1, 1)
+show_behind_parent = false
+top_level = false
+clip_children = 0
+light_mask = 1
+visibility_layer = 1
+z_index = 0
+z_as_relative = true
+y_sort_enabled = false
+texture_filter = 0
+texture_repeat = 0
+material = null
+use_parent_material = false
+clip_contents = false
+custom_minimum_size = Vector2(1200, 648)
+layout_direction = 0
+layout_mode = 1
+anchors_preset = 15
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 0.0
+scale = Vector2(1, 1)
+pivot_offset = Vector2(0, 0)
+size_flags_horizontal = 1
+size_flags_vertical = 1
+size_flags_stretch_ratio = 1.0
+localize_numeral_system = true
+tooltip_text = ""
+tooltip_auto_translate_mode = 0
+focus_neighbor_left = NodePath("")
+focus_neighbor_top = NodePath("")
+focus_neighbor_right = NodePath("")
+focus_neighbor_bottom = NodePath("")
+focus_next = NodePath("")
+focus_previous = NodePath("")
+focus_mode = 0
+mouse_filter = 2
+mouse_force_pass_scroll_events = true
+mouse_default_cursor_shape = 0
+theme = null
+theme_type_variation = &""
+script = ExtResource("10_rku1e")
+
+[node name="LootGrid" type="GridContainer" parent="Upgrades/PanelContainer"]
+custom_minimum_size = Vector2(1200, 648)
+layout_mode = 2
+mouse_filter = 2
+columns = 5

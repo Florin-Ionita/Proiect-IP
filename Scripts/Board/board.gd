@@ -28,7 +28,22 @@ const Tetromino = preload("res://Scenes/Tetrominos/tetromino.tscn")
 
 func _ready() -> void:
 	lines.clear()
-	score.set_goal(300)
+	
+	var shop_info = get_node("../ShopInfo")
+	shop_info.hide()
+	
+	var level_name_lbl = get_node("../LevelDescription/VBoxContainer/Name")
+	var level_description_lbl = get_node("../LevelDescription/VBoxContainer/Description")
+	level_name_lbl.text = "Normal Level"
+	level_description_lbl.text = "No Level Modifiers."
+	
+	var points_lbl = get_node("../Stats_panel/GridContainer/Round_Info_Panel/VBoxContainer2/VBoxContainer3/PointsValue")
+	points_lbl.text = str(0)
+	
+	score.set_goal(100)
+	var goal_lbl = get_node("../Stats_panel/GridContainer/Round_Info_Panel/VBoxContainer2/VBoxContainer4/GoalValue")
+	goal_lbl.text = str(score.goal)
+	
 	for pos in range(BoardShared.block_height):
 		var line = line_scene.instantiate() as Line
 		add_child(line)
@@ -58,29 +73,24 @@ func spawn_tetromino(data: TetrominoShared.TetrominoData, is_played: bool, spawn
 		panel_container.add_child(tetromino)
 		tetromino.set_position(spawn_position)
 
-func set_boss_ability():
+func set_boss_ability(level_description_lbl):
 	randomize() 
 	match 1 % 5:
 		0: 
 			double_point = true
-			print("double_point")
-			boss.emit("Double Points Needed for Goal")
+			level_description_lbl.text = "Double the Points are Needed."
 		1: 
 			double_speed = true
-			print("double_speed")
-			boss.emit("The Pieces Fall Twice as Fast as Normal")
+			level_description_lbl.text = "Pieces Move at Double the Speed."
 		2: 
 			no_active = true
-			print("no_active")
-			boss.emit("You cannot Use your Active ")
+			level_description_lbl.text = "You cannot Use your Active "
 		3: 
 			no_next = true
-			print("no_next")
-			boss.emit("You cannot See Whar is Next")
+			level_description_lbl.text = "You cannot See What is the Next Piece"
 		4: 
 			no_mult_point = true
-			print("no_mult_point")
-			boss.emit("You do not Get any Multiplier for More Lines Cleared")
+			level_description_lbl.text = "You do not Get any Multiplier for More Lines Cleared"
 
 func get_lines():
 	return lines
@@ -143,6 +153,8 @@ func remove_full_lines():
 		if (line.is_full()):
 			# Add the points
 			win = score.add_points(line.calculate_points(mult))
+			var points_lbl = get_node("../Stats_panel/GridContainer/Round_Info_Panel/VBoxContainer2/VBoxContainer3/PointsValue")
+			points_lbl.text = str(score.points)
 			mult *= 2
 			
 			if no_mult_point:
@@ -155,6 +167,10 @@ func remove_full_lines():
 	if win:
 		go_shop()
 
+func remove_panel_tetromino():
+	var panel_tetromino: Tetromino = panel_container.get_children().filter(func (c): return c is Tetromino)[0]
+	panel_tetromino.queue_free()
+
 # Called when a tetromino got locked
 func on_tetromino_locked(tetromino: Tetromino):
 	# Add to line and free it
@@ -163,8 +179,7 @@ func on_tetromino_locked(tetromino: Tetromino):
 	
 	# Remove the child from the preview
 	if !no_next:
-		var panel_tetromino: Tetromino = panel_container.get_children().filter(func (c): return c is Tetromino)[0]
-		panel_tetromino.queue_free()
+		remove_panel_tetromino()
 	
 	# Check for full lines
 	remove_full_lines();
@@ -182,33 +197,50 @@ func empty_table():
 
 func _input(event):
 	if in_shop && event.is_action_pressed("rotate_left"):
+		var shop_info = get_node("../ShopInfo")
+		shop_info.hide()
 		in_shop = false
 		shop.emit()
 		
 # When the level is complete
 func go_shop():
 	in_shop = true
+	var shop_info = get_node("../ShopInfo")
+	shop_info.show()
 	
 	# Calculate the money earned
 	score.calculate_money_gain()
+	var money_lbl = get_node("../Stats_panel/GridContainer/Game_Info_Panel/VBoxContainer/VBoxContainer/MoneyValue")
 	print("Money: ", score.money)
+	money_lbl.text = str(score.money) + '$'
 	
 	# Clear the table
 	empty_table()
 	
 	# Remove the child from the preview
-	var panel_tetromino: Tetromino = panel_container.get_children().filter(func (c): return c is Tetromino)[0]
-	panel_tetromino.queue_free()
+	remove_panel_tetromino()
 	
 	# Set next level
 	score.level += 1;
+	var score_lbl = get_node("../Stats_panel/GridContainer/Game_Info_Panel/VBoxContainer/VBoxContainer3/LevelValue")
+	score_lbl.text = str(score.level)
 	
 	# See boss and choose one
-	if score.level % 2 == 0:
+	var level_name_lbl = get_node("../LevelDescription/VBoxContainer/Name")
+	var level_description_lbl = get_node("../LevelDescription/VBoxContainer/Description")
+	print(level_name_lbl)
+	if score.level % 3 == 0:
 		is_boss = true
-		set_boss_ability()
+		
+		level_name_lbl.text = "Boss"
+		
+		set_boss_ability(level_description_lbl)
 	else:
+		level_name_lbl.text = "Normal"
+		level_description_lbl.text = "No Level Modifiers."
+		
 		is_boss = false
+		
 		double_point = false
 		double_speed = false
 		no_active = false
@@ -220,6 +252,12 @@ func go_shop():
 	score.calculate_next_goal()
 	if double_point:
 		score.set_goal(score.goal * 2)
+	
+	var points_lbl = get_node("../Stats_panel/GridContainer/Round_Info_Panel/VBoxContainer2/VBoxContainer3/PointsValue")
+	points_lbl.text = str(0)
+	
+	var goal_lbl = get_node("../Stats_panel/GridContainer/Round_Info_Panel/VBoxContainer2/VBoxContainer4/GoalValue")
+	goal_lbl.text = str(score.goal)
 	
 	# Calculate new fall time
 	fall_time /= 1.2
